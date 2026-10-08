@@ -225,7 +225,7 @@ Alarm limits for the sample line are also in `factory_toto\config.py`.
 |---|---|
 | Browser asks for Gmail / Google | You opened the wrong URL. Use **http://127.0.0.1:8501**, not streamlit.app. |
 | `Port 8501 is not available` | Run `stop.bat`, then `run.bat`. |
-| `Local Toto weights not found` | Run `python download_model.py` once (needs internet that one time). |
+| `Local Toto weights not found` | Copy `models/Toto-2.0-22m` (`config.json` + `model.safetensors`) from this repo. No internet. |
 | Page is blank / old UI | Hard refresh: **Ctrl+F5**. |
 | Forecast is slow | Normal on CPU. Use context 256 and horizon 24–48 for a quicker test. |
 | `python` not found | Install Python 3.12 and tick **Add python.exe to PATH**. |
