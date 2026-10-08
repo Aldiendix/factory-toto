@@ -1,13 +1,13 @@
-"""Download Datadog Toto 2.0 weights into ./models for fully local inference."""
+"""Check that Toto-2.0-22m weights are already on this computer. No Hugging Face."""
 
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
-from huggingface_hub import snapshot_download
+from factory_toto.config import MODELS_DIR
 
-from factory_toto.config import DEFAULT_MODEL_ID, MODELS_DIR
+TARGET = MODELS_DIR / "Toto-2.0-22m"
 
 
 def _has_weights(target: Path) -> bool:
@@ -16,33 +16,20 @@ def _has_weights(target: Path) -> bool:
     return bool(list(target.glob("*.safetensors")) or list(target.glob("*.bin")))
 
 
-def download(model_id: str = DEFAULT_MODEL_ID, dest: Path | None = None, force: bool = False) -> Path:
-    name = model_id.split("/")[-1]
-    target = dest or (MODELS_DIR / name)
-    target.mkdir(parents=True, exist_ok=True)
-    if _has_weights(target) and not force:
-        print(f"Local weights already present at {target}. Skipping download.")
+def download(dest: Path | None = None, force: bool = False) -> Path:
+    target = dest or TARGET
+    if _has_weights(target):
+        print(f"Local weights ready at {target}. Offline. No Hugging Face.")
         return target
-    print(f"Downloading {model_id} -> {target}")
-    snapshot_download(
-        repo_id=model_id,
-        local_dir=str(target),
+    raise FileNotFoundError(
+        f"Toto weights not found at {target}. "
+        "Copy models/Toto-2.0-22m (config.json + model.safetensors) from this repo. "
+        "This app does not download from Hugging Face."
     )
-    print("Download complete. The app can now run offline.")
-    return target
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Download Toto weights for local use.")
-    parser.add_argument(
-        "--model",
-        default=DEFAULT_MODEL_ID,
-        help="Hugging Face repo id, e.g. Datadog/Toto-2.0-22m",
-    )
-    parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Download again even if local weights already exist.",
-    )
+    parser = argparse.ArgumentParser(description="Verify local Toto weights (offline, no Hugging Face).")
+    parser.add_argument("--force", action="store_true", help="Ignored. Weights are local-only.")
     args = parser.parse_args()
-    download(args.model, force=args.force)
+    download(force=args.force)

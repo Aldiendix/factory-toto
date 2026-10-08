@@ -5,7 +5,7 @@ __pycache__/
 .pytest_cache/
 .streamlit/secrets.toml
 .streamlit/credentials.toml
-models/
+models/.cache/
 data/*.db
 *.log
 .DS_Store

@@ -2,7 +2,7 @@
 
 Local factory time-series app. It forecasts plant sensors with **Datadog Toto 2.0** on this computer.
 
-No Gmail. No Google login. No Streamlit Cloud. After the model is downloaded once, the app can run offline.
+No Gmail. No Google login. No Streamlit Cloud. No Hugging Face. Toto weights ship in `models\Toto-2.0-22m` so the app runs fully local.
 
 - **App title:** Predict factaroy variable
 - **Open in browser:** http://127.0.0.1:8501
@@ -29,7 +29,7 @@ Default model: **Toto-2.0-22m** (~84 MB). This PC has no NVIDIA GPU, so CPU infe
 
 - Windows
 - Python **3.12+** (`python --version`)
-- Internet **only for the first model download**
+- No internet needed for the model (weights are in this repo)
 - About 2 GB disk for Python packages + the 22m weights
 
 ---
@@ -45,13 +45,7 @@ python download_model.py
 python scripts\generate_sample_data.py
 ```
 
-`download_model.py` copies Toto weights into `models\Toto-2.0-22m`. If that folder already has `config.json` and a `.safetensors` file, it skips the download.
-
-To download again:
-
-```bat
-python download_model.py --force
-```
+`download_model.py` only checks that `models\Toto-2.0-22m` already has `config.json` and `model.safetensors`. It does not call Hugging Face.
 
 ---
 
